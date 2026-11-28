@@ -1,20 +1,29 @@
 # Ali Ghanbarzadeh Portfolio
 
-TypeScript, object oriented React, mobile first. Deployed to GitHub Pages with GitHub Actions.
+Mobile-first portfolio for an audio engineer and sound designer. TypeScript, object-oriented React, deployed to GitHub Pages with GitHub Actions. Design system: "Resonant Burgundy" (`public/brand-book.html`).
+
+## Pages
+| Route | Purpose |
+|---|---|
+| `/` | Minimal intro, live SVG sound animation, site index |
+| `/portfolio` | SoundCloud player (tap to load), service lines, studio projects |
+| `/brand` | Logo, colour, type, icons and voice |
+| `/cv` | HTML CV built from the same data, with PDF download and print styles |
+| `/contact` | Contact details and a brief form that opens the visitor's mail app |
+
+## Edit content
+- All copy, CV data, tracks and projects: `src/data/content.ts`
+- To feature a single track or playlist, add a `new Track({ ... })` with its public SoundCloud URL to `tracks`.
+- Brand colours and typography are tokens at the top of `src/styles/global.css`.
+- The CV PDF is `public/Ali_Ghanbarzadeh_CV.pdf`. Replace it when the CV changes.
+
+## Home screen and favicon
+`public/` holds `favicon.svg`, `favicon.ico`, `apple-touch-icon.png`, `icon-192/512.png`, a maskable icon and `manifest.webmanifest`. Adding the site to a phone home screen shows the "A" logo.
 
 ## Deploy to https://aligh8991.github.io
-1. On GitHub, create a **public** repository named exactly `aligh8991.github.io` (this name makes it your user site, served at the root address).
-2. Push this folder to the `main` branch:
-```
-git init
-git add .
-git commit -m "Initial commit"
-git branch -M main
-git remote add origin https://github.com/aligh8991/aligh8991.github.io.git
-git push -u origin main
-```
-3. In the repository open Settings, then Pages, and set Source to **GitHub Actions**. Do this before or right after the first push.
-4. Open the Actions tab. The "Deploy to GitHub Pages" workflow runs on every push to `main`. If the first run failed because Pages was not yet enabled, click Re-run all jobs.
+1. Repository named `aligh8991.github.io`, branch `main`.
+2. Settings, Pages, Source: **GitHub Actions**.
+3. Every push to `main` runs the "Deploy to GitHub Pages" workflow.
 
 ## Develop
 ```
@@ -23,11 +32,8 @@ npm run dev
 npm run build
 ```
 
-## Edit content
-All text, skills, certifications and projects are in `src/data/content.ts`.
-Brand colors and typography are tokens at the top of `src/styles/global.css`.
-
 ## Structure
-- `src/models`: `Profile` and `Project` classes
-- `src/components`: `Header`, `Footer`, `Button`, `Icon` class components
-- `src/pages`: `Home`, `Portfolio`
+- `src/models`: `Profile`, `Experience`, `Project`, `Track` classes
+- `src/components`: `Header`, `Footer`, `Button`, `Icon`, `Logo`, `Reveal`, `SoundWave`, `TrackCard`
+- `src/pages`: `Home`, `Portfolio`, `Brand`, `CV`, `Contact`
+- `src/lib/page.ts`: page title, colour surface and helpers

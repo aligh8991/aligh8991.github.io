@@ -1,14 +1,12 @@
 export type ProjectStatus = "Completed" | "In development" | "Planned";
 
-/** Domain model for a portfolio entry. */
+/** Domain model for a studio project that is not a music release. */
 export class Project {
   constructor(
     public readonly title: string,
     public readonly category: string,
     public readonly status: ProjectStatus,
     public readonly summary: string,
-    public readonly stack: string[],
-    public readonly outcome: string,
   ) {}
 
   get isLive(): boolean {

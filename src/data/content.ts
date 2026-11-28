@@ -1,78 +1,132 @@
-import { Profile } from "../models/Profile";
+import { Experience, Profile } from "../models/Profile";
 import { Project } from "../models/Project";
+import { Track } from "../models/Track";
 
 /**
  * All site copy lives here. Edit this file to update the website.
+ * Source of truth for people-facing facts: the CV (public/Ali_Ghanbarzadeh_CV.pdf).
  */
-export const profile = new Profile(
-  "Ali Ghanbarzadeh",
-  "Front End Web Designer and Music Producer",
-  [
-    "Ali Ghanbarzadeh is a front end web designer and music producer who combines structured interface thinking with a disciplined creative practice. He has completed formal training in web design and professional music production, and he delivers work that is clear, consistent and ready for real users.",
-    "He is self directed, comfortable owning a project from concept through planning to delivery, and works professionally in English and Arabic. Ali is seeking a role where design precision, technical craft and clear communication are valued.",
+export const profile = new Profile({
+  name: "Ali Ghanbarzadeh",
+  headline: "Audio Engineer and Sound Designer",
+  roles: ["Audio engineer", "Sound designer", "Web designer", "Translator"],
+  intro: "Audio engineer and sound designer based in Tehran. Founder of Alto Studio.",
+  summary: [
+    "Multidisciplinary freelance professional working across audio engineering, sound design, web design and professional translation.",
+    "Founder of Alto Studio, a project-based practice that delivers complete creative solutions, from interface to audio to language. Certified technical training is paired with executive-level organisation, clear client communication and a disciplined approach to planning and delivery.",
   ],
-  { email: "aligh8991@gmail.com", phone: "+989046489845" },
-  [
+  contact: {
+    email: "aligh8991@gmail.com",
+    phone: "+98 920 317 3797",
+    location: "Tehran, Iran",
+    soundcloud: "https://soundcloud.com/aayg-1",
+  },
+  services: [
+    { title: "Audio engineering", icon: "knob", summary: "Recording, editing and mixing prepared for release." },
+    { title: "Sound design", icon: "waveform", summary: "Original sound for music, media and interface briefs." },
+    { title: "Web design", icon: "code", summary: "Responsive websites built in HTML, CSS and JavaScript." },
+    { title: "Translation", icon: "language", summary: "Persian, English and Arabic, with attention to tone and context." },
+  ],
+  skills: [
     {
-      title: "Front end web design",
+      title: "Audio engineering",
+      icon: "headphones",
+      foundations: ["Music production", "Sound design", "Audio engineering"],
+      certified: "Music Production, Steinberg",
+    },
+    {
+      title: "Web design",
       icon: "code",
-      level: "Certified, levels 1 and 2",
-      summary: "Responsive, accessible interfaces built on a consistent design system.",
-      items: ["HTML and CSS", "Responsive layout", "UI and UX principles", "TypeScript and React"],
+      foundations: ["Web design", "HTML", "CSS", "JavaScript"],
+      certified: "Web Design Levels 1 to 3, Tehran Institute of Technology",
     },
     {
-      title: "Music production",
-      icon: "music",
-      level: "Steinberg certified",
-      summary: "Composition, arrangement and mixing with a professional production workflow.",
-      items: ["Arrangement", "Mixing", "Sound design", "DAW workflow"],
-    },
-    {
-      title: "English and Arabic",
+      title: "Professional",
       icon: "language",
-      level: "Bilingual communication",
-      summary: "Written and spoken communication for international teams and audiences.",
-      items: ["English: professional use", "Arabic: working knowledge", "Persian: native"],
+      foundations: ["Translation", "Research", "Planning", "Communication"],
+    },
+    {
+      title: "Office",
+      icon: "layers",
+      foundations: ["Word", "PowerPoint", "Excel", "Accounting"],
     },
   ],
-  [
-    { name: "Web Design, Level 1", issuer: "Tehran Institute of Technology" },
-    { name: "Web Design, Level 2", issuer: "Tehran Institute of Technology" },
-    { name: "Music Production", issuer: "Steinberg" },
+  credentials: [
+    { name: "Music Production Certificate", issuer: "Steinberg" },
+    { name: "Web Design Professional, Levels 1 to 3 (HTML, CSS, JavaScript)", issuer: "Tehran Institute of Technology" },
   ],
-);
+  education: { name: "International Diploma", school: "Tehran International School", period: "09/2009 to 05/2016" },
+  languages: ["Persian", "English", "Arabic"],
+  interests: ["Scuba diving"],
+});
 
-export const projects: Project[] = [
+export const experience: Experience[] = [
+  new Experience(
+    "Founder and Lead Freelancer",
+    "Alto Studio",
+    "Freelance agency, project-based · Tehran, Iran",
+    "05/2016 to present",
+    [
+      "Lead a project-based practice with four service lines: web design, sound design, audio engineering and translation, scoped and delivered per client engagement.",
+      "Design and build websites in HTML, CSS and JavaScript, applying formal training from Tehran Institute of Technology.",
+      "Produce and engineer audio for music production and sound design briefs, drawing on Steinberg-certified training.",
+      "Deliver professional translation in Persian, English and Arabic, with attention to accuracy, tone and context.",
+      "Manage each project independently, from client brief and planning through to final delivery.",
+    ],
+    true,
+  ),
+  new Experience(
+    "Executive Assistant to the CEO",
+    "Iranian Godmother",
+    "Tehran, Iran",
+    "05/2016 to 05/2018",
+    [
+      "Provided direct executive support to the CEO, coordinating scheduling, correspondence and daily priorities.",
+      "Prepared business documents, presentations and spreadsheets in Microsoft Word, PowerPoint and Excel.",
+      "Supported planning, research and accounting tasks, and acted as a point of communication between the CEO and stakeholders.",
+    ],
+  ),
+];
+
+/**
+ * SoundCloud items shown on the Portfolio page.
+ * 1. The profile entry loads your full track list inside the site.
+ * 2. To feature a single track or playlist, add an entry with its public SoundCloud URL:
+ *    new Track({ title: "Track name", url: "https://soundcloud.com/aayg-1/track-slug", role: "Mix and master", year: "2025", tags: ["Mixing"] })
+ */
+export const tracks: Track[] = [
+  new Track({
+    title: "All releases",
+    url: "https://soundcloud.com/aayg-1",
+    kind: "profile",
+    role: "Music production · Sound design · Audio engineering",
+    tags: ["SoundCloud", "Full catalogue"],
+  }),
+];
+
+export const studioProjects: Project[] = [
   new Project(
     "Dua and Dhikr Book",
     "Digital publication design",
     "Completed",
-    "A print ready A5 book of supplications compiled from collected source images, typeset with ornate borders and Arabic calligraphic type on a cream page.",
-    ["Typography", "Arabic typesetting", "PDF production"],
-    "A cohesive, readable book with a unified visual identity across every page.",
+    "A print-ready A5 book of supplications, typeset with ornate borders and Arabic calligraphic type.",
   ),
   new Project(
     "Badr Clothing Brand",
     "Brand and e-commerce",
     "In development",
-    "An online only clothing label launching with a casual line, with luxury and sport lines planned. Scope covers brand identity, storefront and a six month launch plan.",
-    ["Brand identity", "Storefront design", "Planning"],
-    "A minimal, scalable brand system prepared for an online launch.",
+    "Brand identity, storefront and launch plan for an online-only clothing label.",
   ),
   new Project(
     "Farm Produce Online Shop",
     "E-commerce website",
     "In development",
-    "An online store for long shelf life farm products and handwoven carpets, planned with a step by step website build roadmap.",
-    ["Information architecture", "Product pages", "Web design"],
-    "A focused catalogue experience designed for mobile buyers.",
+    "Mobile-first online store for farm products and handwoven carpets.",
   ),
   new Project(
     "Automated Trading Bot",
     "Software and automation",
     "In development",
-    "A Python trading bot with learning capabilities, developed incrementally with a strict zero budget constraint and a staged path from simulation to live use.",
-    ["Python", "Automation", "Data driven design"],
-    "A working foundation built for iterative improvement.",
+    "A Python trading bot built in stages, from simulation towards live use.",
   ),
 ];
