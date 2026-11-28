@@ -1,77 +1,66 @@
 import { Component } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "../components/Button";
 import { Icon } from "../components/Icon";
+import { Reveal } from "../components/Reveal";
+import { SoundWave } from "../components/SoundWave";
+import { NAV_LINKS } from "../components/Header";
 import { profile } from "../data/content";
+import { enterPage } from "../lib/page";
 
+const BLURBS: Record<string, string> = {
+  "/portfolio": "Music and sound design, playable here",
+  "/brand": "Logo, colour, type and voice",
+  "/cv": "Experience, skills and certification",
+  "/contact": "Start a project conversation",
+};
+
+/** Minimal landing page: one intro, one living artwork, one index. */
 export class Home extends Component {
-  componentDidMount() { document.title = `${profile.name} | ${profile.headline}`; }
+  componentDidMount() { enterPage(`${profile.name} | ${profile.headline}`, "night"); }
 
   render() {
     return (
-      <>
+      <div className="page-enter">
         <section className="hero" aria-labelledby="hero-title">
-          <div className="container hero__grid">
-            <div className="hero__copy">
-              <p className="hero__role">{profile.headline}</p>
-              <h1 id="hero-title">{profile.name}</h1>
-              <div className="hero__body">
-                {profile.summary.map((p) => <p key={p.slice(0, 24)}>{p}</p>)}
-              </div>
-              <div className="btn-row">
-                <Button variant="primary" icon="mail" href={profile.mailHref}>Email me</Button>
-                <Button variant="secondary" icon="phone" href={profile.telHref}>Call me</Button>
-                <Button variant="ghost" icon="grid" to="/portfolio">View portfolio</Button>
-              </div>
+          <div className="container hero__inner">
+            <p className="eyebrow hero__eyebrow">{profile.roles.slice(0, 2).join(" · ")}</p>
+            <h1 id="hero-title" className="hero__title">
+              Sound,<br /><em>shaped</em><br />with care.
+            </h1>
+            <SoundWave />
+            <p className="hero__intro">
+              <strong>{profile.name}.</strong> {profile.intro}
+            </p>
+            <div className="btn-row">
+              <Button variant="primary" icon="play" to="/portfolio">Listen to the work</Button>
+              <Button variant="ghost" icon="mail" to="/contact">Get in touch</Button>
             </div>
-
-            <aside className="contact-card" aria-labelledby="contact-title">
-              <h2 id="contact-title">Contact</h2>
-              <a className="contact-line" href={profile.mailHref}>
-                <span className="icon-wrap"><Icon name="mail" /></span>
-                <span><small>Email</small><strong>{profile.contact.email}</strong></span>
-              </a>
-              <a className="contact-line" href={profile.telHref}>
-                <span className="icon-wrap"><Icon name="phone" /></span>
-                <span><small>Phone</small><strong>{profile.contact.phone}</strong></span>
-              </a>
-            </aside>
+            <span className="hero__scroll" aria-hidden="true">Index</span>
           </div>
         </section>
 
-        <section className="section" aria-labelledby="skills-title">
+        <section className="index" aria-label="Site index">
           <div className="container">
-            <div className="section-head">
-              <h2 id="skills-title">Core skills</h2>
-              <p className="lead">Three areas of focus, each backed by formal training or hands on delivery.</p>
-            </div>
-            <div className="grid grid--3">
-              {profile.skills.map((s) => (
-                <article className="card" key={s.title}>
-                  <span className="card__icon"><Icon name={s.icon} /></span>
-                  <h3>{s.title}</h3>
-                  <p className="card__level">{s.level}</p>
-                  <p>{s.summary}</p>
-                  <ul className="chips">{s.items.map((i) => <li className="chip" key={i}>{i}</li>)}</ul>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="section section--tint" aria-labelledby="cred-title">
-          <div className="container">
-            <div className="section-head"><h2 id="cred-title">Certifications</h2></div>
-            <ul className="grid grid--3">
-              {profile.credentials.map((c) => (
-                <li className="cred" key={c.name}>
-                  <span className="card__icon"><Icon name="award" /></span>
-                  <div><strong>{c.name}</strong><span>{c.issuer}</span></div>
+            <ul className="index__list">
+              {NAV_LINKS.map((l, i) => (
+                <li key={l.to}>
+                  <Reveal delay={i * 60}>
+                    <Link className="index__row" to={l.to}>
+                      <span className="index__num">{String(i + 1).padStart(2, "0")}</span>
+                      <span className="index__text">
+                        <strong>{l.label}</strong>
+                        <small>{BLURBS[l.to]}</small>
+                      </span>
+                      <Icon name="arrow" />
+                    </Link>
+                  </Reveal>
                 </li>
               ))}
             </ul>
           </div>
         </section>
-      </>
+      </div>
     );
   }
 }
