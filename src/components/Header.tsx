@@ -1,16 +1,19 @@
 import { Component } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Icon } from "./Icon";
+import { Logo } from "./Logo";
 import { profile } from "../data/content";
 
 interface State { open: boolean }
 
-const LINKS = [
-  { to: "/", label: "Profile", end: true },
-  { to: "/portfolio", label: "Portfolio", end: false },
+export const NAV_LINKS = [
+  { to: "/portfolio", label: "Portfolio" },
+  { to: "/brand", label: "Brand" },
+  { to: "/cv", label: "CV" },
+  { to: "/contact", label: "Contact" },
 ];
 
-/** Mobile first header: full screen menu sheet below 960px, inline nav above. */
+/** Mobile first header: full screen menu below 900px, inline navigation above. */
 export class Header extends Component<object, State> {
   state: State = { open: false };
 
@@ -19,43 +22,46 @@ export class Header extends Component<object, State> {
   private onKey = (e: KeyboardEvent) => { if (e.key === "Escape") this.close(); };
 
   componentDidMount() { document.addEventListener("keydown", this.onKey); }
-  componentWillUnmount() { document.removeEventListener("keydown", this.onKey); document.body.style.overflow = ""; }
-  componentDidUpdate() { document.body.style.overflow = this.state.open ? "hidden" : ""; }
+  componentWillUnmount() { document.removeEventListener("keydown", this.onKey); document.documentElement.classList.remove("menu-open"); }
+  componentDidUpdate() { document.documentElement.classList.toggle("menu-open", this.state.open); }
 
   render() {
     const { open } = this.state;
     return (
-      <header className="header">
+      <header className={`header ${open ? "is-open" : ""}`}>
         <div className="container header__bar">
-          <Link className="brand" to="/" onClick={this.close} aria-label="Ali Ghanbarzadeh, home">
-            <span className="brand__mark" aria-hidden="true">{profile.initials}</span>
-            <span>{profile.name}</span>
+          <Link className="brand" to="/" onClick={this.close} aria-label={`${profile.name}, home`}>
+            <Logo size={34} />
+            <span className="brand__name">{profile.name}</span>
           </Link>
 
           <nav className="nav" aria-label="Primary">
-            {LINKS.map((l) => (
-              <NavLink key={l.to} to={l.to} end={l.end} className={({ isActive }) => (isActive ? "active" : "")}>{l.label}</NavLink>
+            {NAV_LINKS.map((l) => (
+              <NavLink key={l.to} to={l.to} className={({ isActive }) => (isActive ? "active" : "")}>{l.label}</NavLink>
             ))}
           </nav>
 
           <button className="menu-btn" type="button" onClick={this.toggle}
-            aria-expanded={open} aria-controls="mobile-menu" aria-label={open ? "Close menu" : "Open menu"}>
+            aria-expanded={open} aria-controls="menu" aria-label={open ? "Close menu" : "Open menu"}>
             <Icon name={open ? "close" : "menu"} />
           </button>
         </div>
 
-        <div className="sheet" id="mobile-menu" hidden={!open}>
-          <nav className="sheet__links" aria-label="Mobile">
-            {LINKS.map((l) => (
-              <NavLink key={l.to} to={l.to} end={l.end} onClick={this.close}
-                className={({ isActive }) => `sheet__link ${isActive ? "active" : ""}`}>
-                <span>{l.label}</span><Icon name="arrow" />
+        <div className="menu" id="menu" aria-hidden={!open}>
+          <nav className="menu__links" aria-label="Mobile">
+            {NAV_LINKS.map((l, i) => (
+              <NavLink key={l.to} to={l.to} onClick={this.close} tabIndex={open ? 0 : -1}
+                className={({ isActive }) => `menu__link ${isActive ? "active" : ""}`}
+                style={{ transitionDelay: open ? `${120 + i * 70}ms` : "0ms" }}>
+                <small>{String(i + 1).padStart(2, "0")}</small>
+                <span>{l.label}</span>
               </NavLink>
             ))}
           </nav>
-          <div className="btn-row">
-            <a className="btn btn--primary" href={profile.mailHref}><Icon name="mail" /><span>Email me</span></a>
-            <a className="btn btn--secondary" href={profile.telHref}><Icon name="phone" /><span>Call me</span></a>
+          <div className="menu__foot">
+            <a href={profile.mailHref} tabIndex={open ? 0 : -1}>{profile.contact.email}</a>
+            <a href={profile.telHref} tabIndex={open ? 0 : -1}>{profile.contact.phone}</a>
+            <a href={profile.contact.soundcloud} target="_blank" rel="noopener noreferrer" tabIndex={open ? 0 : -1}>SoundCloud</a>
           </div>
         </div>
       </header>
